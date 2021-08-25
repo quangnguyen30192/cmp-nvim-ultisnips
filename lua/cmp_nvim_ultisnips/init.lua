@@ -3,9 +3,9 @@ local util = require('vim.lsp.util')
 
 local source = {}
 
-local function get_snippet_preview(data)
-  local filepath = string.gsub(data.location, '.snippets:%d*', '.snippets')
-  local _, _, linenr = string.find(data.location, ':(%d+)')
+local function get_snippet_preview(user_data)
+  local filepath = string.gsub(user_data.location, '.snippets:%d*', '.snippets')
+  local _, _, linenr = string.find(user_data.location, ':(%d+)')
   local content = vim.fn.readfile(filepath)
 
   local snippet = {}
@@ -29,16 +29,6 @@ local function get_snippet_preview(data)
   return snippet
 end
 
-local function buildDocumentation(completion_item)
-  local user_data = completion_item.user_data
-  if user_data == nil or user_data == '' then
-    return ''
-  end
-
-  local documentation = util.convert_input_to_markdown_lines(get_snippet_preview(user_data))
-  return table.concat(documentation, '\n')
-end
-
 source.new = function()
   return setmetatable({}, { __index = source })
 end
@@ -51,7 +41,7 @@ function source:get_debug_name()
   return 'ultisnips'
 end
 
-function source:complete(request, callback)
+function source:complete(_, callback)
   local items = {}
 
   local received_snippets = vim.F.npcall(vim.call, 'UltiSnips#SnippetsInCurrentScope', 1) or {}
@@ -80,9 +70,10 @@ function source:resolve(completion_item, callback)
     callback(completion_item)
   end
 
+  local documentation = util.convert_input_to_markdown_lines(get_snippet_preview(user_data))
   completion_item.documentation = {
     kind = cmp.lsp.MarkupKind.Markdown,
-    value =  buildDocumentation(completion_item)
+    value = table.concat(documentation, '\n')
   }
 
   callback(completion_item)
