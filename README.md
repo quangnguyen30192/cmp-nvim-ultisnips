@@ -39,3 +39,6 @@ use {
   end
 }
 ```
+
+# Credit
+[Compe source for ultisnips](https://github.com/hrsh7th/nvim-compe/blob/master/lua/compe_ultisnips/init.lua)
