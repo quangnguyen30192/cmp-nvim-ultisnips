@@ -8,6 +8,10 @@ use { 'quangnguyen30192/cmp-nvim-ultisnips' }
 use { 
   'hrsh7th/nvim-cmp',
   config = function ()
+    local t = function(str)
+      return vim.api.nvim_replace_termcodes(str, true, true, true)
+    end
+
     require'cmp'.setup {
     snippet = {
       expand = function(args)
