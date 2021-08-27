@@ -11,26 +11,27 @@ local t = function(str)
 end
 
 local check_back_space = function()
-  local col = vim.fn.col '.' - 1
-  return col == 0 or vim.fn.getline('.'):sub(col, col):match '%s' ~= nil
+  local col = vim.fn.col(".") - 1
+  return col == 0 or vim.fn.getline("."):sub(col, col):match("%s") ~= nil
 end
 
-use { 
-  'hrsh7th/nvim-cmp',
-  config = function ()
-    require'cmp'.setup {
+local cmp = require("cmp")
+use({
+  "hrsh7th/nvim-cmp",
+  config = function()
+    require("cmp").setup({
       snippet = {
         expand = function(args)
           vim.fn["UltiSnips#Anon"](args.body)
         end,
       },
       sources = {
-        { name = 'ultisnips' },
+        { name = "ultisnips" },
         -- more sources
       },
-      -- tab for expand source 
+      -- tab for expand source
       mapping = {
-        ['<Tab>'] = cmp.mapping(function(fallback)
+        ["<Tab>"] = cmp.mapping(function(fallback)
           if vim.fn.pumvisible() == 1 then
             if vim.fn["UltiSnips#CanExpandSnippet"]() == 1 or vim.fn["UltiSnips#CanJumpForwards"]() == 1 then
               return vim.fn.feedkeys(t("<C-R>=UltiSnips#ExpandSnippetOrJump()<CR>"))
@@ -42,11 +43,14 @@ use {
           else
             fallback()
           end
-        end, { 'i', 's' })
+        end, {
+          "i",
+          "s",
+        }),
       },
-  }
-  end
-}
+    })
+  end,
+})
 ```
 
 # Credit
