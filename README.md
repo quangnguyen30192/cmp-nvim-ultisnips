@@ -19,7 +19,7 @@ local cmp = require("cmp")
 use({
   "hrsh7th/nvim-cmp",
   config = function()
-    require("cmp").setup({
+    cmp.setup({
       snippet = {
         expand = function(args)
           vim.fn["UltiSnips#Anon"](args.body)
