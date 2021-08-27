@@ -2,6 +2,16 @@ local cmp = require('cmp')
 local util = require('vim.lsp.util')
 
 local source = {}
+local ft_snippets_cache = {}
+
+local function load_snippets()
+  if ft_snippets_cache[vim.bo.filetype] == nil then
+    vim.F.npcall(vim.call, 'UltiSnips#SnippetsInCurrentScope', 1)
+    ft_snippets_cache[vim.bo.filetype] = vim.g.current_ulti_dict_info
+  end
+
+  return ft_snippets_cache[vim.bo.filetype]
+end
 
 local function get_snippet_preview(user_data)
   local filepath = string.gsub(user_data.location, '.snippets:%d*', '.snippets')
@@ -44,14 +54,8 @@ end
 function source:complete(_, callback)
   local items = {}
 
-  local received_snippets = vim.F.npcall(vim.call, 'UltiSnips#SnippetsInCurrentScope', 1) or {}
-  if vim.tbl_isempty(received_snippets) then
-    callback(items)
-  end
-
-  local snippets_list = vim.g.current_ulti_dict_info
-
-  for key, value in pairs(snippets_list) do
+  local snippets = load_snippets()
+  for key, value in pairs(snippets) do
     local item = {
       word =  key,
       label =  key,
@@ -85,7 +89,8 @@ function source:execute(completion_item, callback)
 end
 
 function source:is_available()
-  return true
+  -- if UltiSnips is installed then this variable should be defined
+  return vim.g.UltiSnipsExpandTrigger ~= nil
 end
 
 return source

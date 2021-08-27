@@ -4,10 +4,11 @@
 
 ```lua
 -- Installation
-use { 'quangnguyen30192/cmp-nvim-ultisnips' } 
-
 use({
   "hrsh7th/nvim-cmp",
+  requires = {
+    'quangnguyen30192/cmp-nvim-ultisnips'
+  },
   config = function()
     local cmp = require("cmp")
     local t = function(str)
