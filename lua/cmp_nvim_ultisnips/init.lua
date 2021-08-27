@@ -1,44 +1,8 @@
 local cmp = require('cmp')
 local util = require('vim.lsp.util')
+local cmp_snippets = require("cmp_nvim_ultisnips.snippets")
 
 local source = {}
-local ft_snippets_cache = {}
-
-local function load_snippets()
-  if ft_snippets_cache[vim.bo.filetype] == nil then
-    vim.F.npcall(vim.call, 'UltiSnips#SnippetsInCurrentScope', 1)
-    ft_snippets_cache[vim.bo.filetype] = vim.g.current_ulti_dict_info
-  end
-
-  return ft_snippets_cache[vim.bo.filetype]
-end
-
-local function get_snippet_preview(user_data)
-  local filepath = string.gsub(user_data.location, '.snippets:%d*', '.snippets')
-  local _, _, linenr = string.find(user_data.location, ':(%d+)')
-  local content = vim.fn.readfile(filepath)
-
-  local snippet = {}
-  local count = 0
-
-  table.insert(snippet, '```' .. vim.bo.filetype)
-  for i, line in pairs(content) do
-    if i > linenr - 1 then
-      local is_snippet_header = line:find('^snippet%s[^%s]') ~= nil
-      count = count + 1
-      if line:find('^endsnippet') ~= nil or is_snippet_header and count ~= 1 then
-        break
-      end
-      if not is_snippet_header then
-        table.insert(snippet, line)
-      end
-    end
-  end
-  table.insert(snippet, '```')
-
-  return snippet
-end
-
 source.new = function()
   return setmetatable({}, { __index = source })
 end
@@ -54,7 +18,7 @@ end
 function source:complete(_, callback)
   local items = {}
 
-  local snippets = load_snippets()
+  local snippets = cmp_snippets.load()
   for key, value in pairs(snippets) do
     local item = {
       word =  key,
@@ -74,7 +38,7 @@ function source:resolve(completion_item, callback)
     callback(completion_item)
   end
 
-  local documentation = util.convert_input_to_markdown_lines(get_snippet_preview(user_data))
+  local documentation = util.convert_input_to_markdown_lines(cmp_snippets.get_snippet_preview(user_data))
   completion_item.documentation = {
     kind = cmp.lsp.MarkupKind.Markdown,
     value = table.concat(documentation, '\n')
