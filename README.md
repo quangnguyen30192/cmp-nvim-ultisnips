@@ -7,7 +7,7 @@
 use({
   "hrsh7th/nvim-cmp",
   requires = {
-    'quangnguyen30192/cmp-nvim-ultisnips'
+    "quangnguyen30192/cmp-nvim-ultisnips",
   },
   config = function()
     local cmp = require("cmp")
@@ -30,17 +30,49 @@ use({
         { name = "ultisnips" },
         -- more sources
       },
-      -- tab for expand source
+      -- Configure for <TAB> people
+      -- - <TAB> and <S-TAB>: cycle forward and backward through autocompletion items
+      -- - <TAB> and <S-TAB>: cycle forward and backward through snippets placeholders
+      -- - <TAB> to expand snippet when no completion item selected (you don't need to select the snippet from completion item to expand)
+      -- - <C-space> to expand the selected snippet from completion menu
       mapping = {
-        ["<Tab>"] = cmp.mapping(function(fallback)
+        ["<C-Space>"] = cmp.mapping(function(fallback)
           if vim.fn.pumvisible() == 1 then
-            if vim.fn["UltiSnips#CanExpandSnippet"]() == 1 or vim.fn["UltiSnips#CanJumpForwards"]() == 1 then
-              return vim.fn.feedkeys(t("<C-R>=UltiSnips#ExpandSnippetOrJump()<CR>"))
+            if vim.fn["UltiSnips#CanExpandSnippet"]() == 1 then
+              return vim.fn.feedkeys(t("<C-R>=UltiSnips#ExpandSnippet()<CR>"))
             end
 
             vim.fn.feedkeys(t("<C-n>"), "n")
           elseif check_back_space() then
+            vim.fn.feedkeys(t("<cr>"), "n")
+          else
+            fallback()
+          end
+        end, {
+          "i",
+          "s",
+        }),
+        ["<Tab>"] = cmp.mapping(function(fallback)
+          if vim.fn.complete_info()["selected"] == -1 and vim.fn["UltiSnips#CanExpandSnippet"]() == 1 then
+            vim.fn.feedkeys(t("<C-R>=UltiSnips#ExpandSnippet()<CR>"))
+          elseif vim.fn["UltiSnips#CanJumpForwards"]() == 1 then
+            vim.fn.feedkeys(t("<C-R>=UltiSnips#JumpForwards()<CR>"))
+          elseif vim.fn.pumvisible() == 1 then
+            vim.fn.feedkeys(t("<C-n>"), "n")
+          elseif check_back_space() then
             vim.fn.feedkeys(t("<tab>"), "n")
+          else
+            fallback()
+          end
+        end, {
+          "i",
+          "s",
+        }),
+        ["<S-Tab>"] = cmp.mapping(function(fallback)
+          if vim.fn["UltiSnips#CanJumpBackwards"]() == 1 then
+            return vim.fn.feedkeys(t("<C-R>=UltiSnips#JumpBackwards()<CR>"))
+          elseif vim.fn.pumvisible() == 1 then
+            vim.fn.feedkeys(t("<C-p>"), "n")
           else
             fallback()
           end
