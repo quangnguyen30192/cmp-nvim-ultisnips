@@ -56,7 +56,7 @@ use({
           if vim.fn.complete_info()["selected"] == -1 and vim.fn["UltiSnips#CanExpandSnippet"]() == 1 then
             vim.fn.feedkeys(t("<C-R>=UltiSnips#ExpandSnippet()<CR>"))
           elseif vim.fn["UltiSnips#CanJumpForwards"]() == 1 then
-            vim.fn.feedkeys(t("<C-R>=UltiSnips#JumpForwards()<CR>"))
+            vim.fn.feedkeys(t("<ESC>:call UltiSnips#JumpForwards()<CR>"))
           elseif vim.fn.pumvisible() == 1 then
             vim.fn.feedkeys(t("<C-n>"), "n")
           elseif check_back_space() then
@@ -82,6 +82,19 @@ use({
         }),
       },
     })
+  end,
+})
+```
+
+UltiSnip was auto-removing tab mappings for select mode, that leads to we cannot jump through snippet stops
+
+We have to disable this by set `UltiSnipsRemoveSelectModeMappings = 0` (Credit [JoseConseco](https://github.com/quangnguyen30192/cmp-nvim-ultisnips/issues/5))
+```lua
+use({
+  "SirVer/ultisnips",
+  requires = "honza/vim-snippets",
+  config = function()
+    vim.g.UltiSnipsRemoveSelectModeMappings = 0
   end,
 })
 ```
