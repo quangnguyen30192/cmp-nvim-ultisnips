@@ -104,6 +104,7 @@ use({
 
 # Issues
 `honza/vim-snippets` does not work in neovim nightly for the time being. Please check this [issue](https://github.com/quangnguyen30192/cmp-nvim-ultisnips/issues/9)
+
 Neovim team is working on the [fix](https://github.com/neovim/neovim/pull/15632)
 
 The temporary solution is
