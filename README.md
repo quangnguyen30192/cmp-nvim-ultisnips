@@ -101,3 +101,12 @@ use({
 
 # Credit
 [Compe source for ultisnips](https://github.com/hrsh7th/nvim-compe/blob/master/lua/compe_ultisnips/init.lua)
+
+# Issues
+`honza/vim-snippets` does not work in neovim nightly for the time being. Please check this [issue](https://github.com/quangnguyen30192/cmp-nvim-ultisnips/issues/9)
+Neovim team is working on the [fix](https://github.com/neovim/neovim/pull/15632)
+
+The temporary solution is
+```lua
+use {'honza/vim-snippets', rtp = '.'}
+```
