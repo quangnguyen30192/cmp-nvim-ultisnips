@@ -56,7 +56,7 @@ use({
           "s",
         }),
         ["<Tab>"] = cmp.mapping(function(fallback)
-          if vim.fn.complete_info()["selected"] == -1 and vim.fn["UltiSnips#CanExpandSnippet"]() == 1 then
+          if cmp.get_selected_entry() == nil and vim.fn["UltiSnips#CanExpandSnippet"]() == 1 then
             press("<C-R>=UltiSnips#ExpandSnippet()<CR>")
           elseif vim.fn["UltiSnips#CanJumpForwards"]() == 1 then
             press("<ESC>:call UltiSnips#JumpForwards()<CR>")
