@@ -54,6 +54,8 @@ use({
         end, {
           "i",
           "s",
+          -- add this line when using cmp-cmdline:
+          -- "c",
         }),
         ["<Tab>"] = cmp.mapping(function(fallback)
           if cmp.get_selected_entry() == nil and vim.fn["UltiSnips#CanExpandSnippet"]() == 1 then
@@ -70,6 +72,8 @@ use({
         end, {
           "i",
           "s",
+          -- add this line when using cmp-cmdline:
+          -- "c",
         }),
         ["<S-Tab>"] = cmp.mapping(function(fallback)
           if vim.fn["UltiSnips#CanJumpBackwards"]() == 1 then
@@ -82,6 +86,8 @@ use({
         end, {
           "i",
           "s",
+          -- add this line when using cmp-cmdline:
+          -- "c",
         }),
       },
     })
