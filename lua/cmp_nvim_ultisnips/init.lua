@@ -21,8 +21,8 @@ function source:complete(_, callback)
   local snippets = cmp_snippets.load()
   for key, value in pairs(snippets) do
     local item = {
-      word =  key,
-      label =  key,
+      label = key,
+      insertText = value.insertText,
       user_data = value,
       kind = cmp.lsp.CompletionItemKind.Snippet,
     }
