@@ -1,6 +1,5 @@
 local cmp = require('cmp')
-local util = require('vim.lsp.util')
-local cmp_snippets = require("cmp_nvim_ultisnips.snippets")
+local cmp_snippets = require('cmp_nvim_ultisnips.snippets')
 
 local source = {}
 source.new = function()
@@ -17,33 +16,27 @@ end
 
 function source:complete(_, callback)
   local items = {}
-
-  local snippets = cmp_snippets.load()
-  for key, value in pairs(snippets) do
-    local item = {
-      word =  key,
-      label =  key,
-      user_data = value,
-      kind = cmp.lsp.CompletionItemKind.Snippet,
-    }
-    items[#items+1] = item
+  local info = cmp_snippets.load_snippet_info()
+  for _, snippet_info in pairs(info) do
+    -- skip regex and expression snippets for now
+    if not snippet_info.options or not snippet_info.options:match('[re]') then
+      local item = {
+        word =  snippet_info.tab_trigger,
+        label = snippet_info.tab_trigger,
+        kind = cmp.lsp.CompletionItemKind.Snippet,
+        userdata = snippet_info,
+      }
+      table.insert(items, item)
+    end
   end
-
   callback(items)
 end
 
 function source:resolve(completion_item, callback)
-  local user_data = completion_item.user_data
-  if user_data == nil or user_data == '' then
-    callback(completion_item)
-  end
-
-  local documentation = util.convert_input_to_markdown_lines(cmp_snippets.get_snippet_preview(user_data))
   completion_item.documentation = {
     kind = cmp.lsp.MarkupKind.Markdown,
-    value = table.concat(documentation, '\n')
+    value = cmp_snippets.documentation(completion_item.userdata)
   }
-
   callback(completion_item)
 end
 
