@@ -115,7 +115,7 @@ function M.parse_snippet_header(input)
       end
     },
     tab_trigger = {
-      rhs = { '^[^"%A]+', '^".-"', '^%S.+%S' },
+      rhs = { '^[^"%A]+', '^%S.+%S' },
     },
     description = {
       rhs = { '^"([^"]*)"' }
