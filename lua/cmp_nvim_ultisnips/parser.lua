@@ -50,7 +50,7 @@ function M.handle_non_terminal_symbol(production_name, grammar, input, force_par
         if #result.matches == 1 then
           result.matches = result.matches[1]
         end
-        matches[symbol_num] = result.matches
+        table.insert(matches, result.matches)
         cur_input = result.remaining
       end
       -- the rule was successfully applied to the input string

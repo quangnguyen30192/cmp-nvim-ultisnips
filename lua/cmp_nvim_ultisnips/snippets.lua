@@ -14,7 +14,7 @@ local function parse_snippets(snippets_file_path)
   local found_snippet_header = false
 
   for _, line in ipairs(content) do
-    local stripped_header = line:match('^%s*snippet%s+(.*)')
+    local stripped_header = line:match('^%s*snippet%s+(.-)%s*$')
     -- found possible snippet header
     if stripped_header ~= nil then
       local header_info = parser.parse_snippet_header(stripped_header)
