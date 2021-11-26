@@ -14,14 +14,16 @@ local function parse_snippets(snippets_file_path)
   local found_snippet_header = false
 
   for _, line in ipairs(content) do
-    local stripped_header = line:match('^%s*snippet%s+(.-)%s*$')
-    -- found possible snippet header
-    if stripped_header ~= nil then
-      local header_info = parser.parse_snippet_header(stripped_header)
-      if not vim.tbl_isempty(header_info) then
-        cur_info = header_info
-        cur_info.content = {}
-        found_snippet_header = true
+    if not found_snippet_header then
+      local stripped_header = line:match('^%s*snippet%s+(.-)%s*$')
+      -- found possible snippet header
+      if stripped_header ~= nil then
+        local header_info = parser.parse_snippet_header(stripped_header)
+        if not vim.tbl_isempty(header_info) then
+          cur_info = header_info
+          cur_info.content = {}
+          found_snippet_header = true
+        end
       end
     elseif found_snippet_header and line:match('^endsnippet') ~= nil then
       table.insert(snippet_info_for_file[snippets_file_path], cur_info)
