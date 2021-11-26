@@ -35,7 +35,7 @@ function M.handle_non_terminal_symbol(production_name, grammar, input, force_par
       symbols = { rule }
     end
 
-    for symbol_num, symbol in ipairs(symbols) do
+    for _, symbol in ipairs(symbols) do
       local is_terminal_symbol = (grammar.productions[symbol] == nil)
 
       local result
@@ -115,7 +115,7 @@ function M.parse_snippet_header(input)
       end
     },
     tab_trigger = {
-      rhs = { '^[^"%A]+', '^%S.+%S' },
+      rhs = { '^.+%S*' },
     },
     description = {
       rhs = { '^"([^"]*)"' }

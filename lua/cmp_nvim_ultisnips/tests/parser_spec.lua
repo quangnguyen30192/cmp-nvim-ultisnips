@@ -264,5 +264,24 @@ describe('parser for', function()
       local result = parser.parse_snippet_header('func "Function Header" ')
       assert.are_same({}, result)
     end)
+
+    it('should match tab-trigger containing dot', function()
+      local result = parser.parse_snippet_header('j.u')
+      local expected = {
+        tab_trigger = 'j.u'
+      }
+      assert.are_same(expected, result)
+    end)
+
+    it('should match tab_trigger with less than 3 chars', function()
+      local result = parser.parse_snippet_header('c "Constructor" b')
+      local expected = {
+        tab_trigger = 'c',
+        description = 'Constructor',
+        options = 'b'
+      }
+      assert.are_same(expected, result)
+    end)
+
   end)
 end)
