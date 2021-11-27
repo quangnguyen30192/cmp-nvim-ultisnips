@@ -61,6 +61,11 @@ function M.load_snippet_info()
   return snippet_info
 end
 
+function M.clear_caches()
+  snippet_info_for_file = {}
+  snippet_info_for_ft = {}
+end
+
 function M.format_snippet_content(content)
   local snippet_content = {}
 

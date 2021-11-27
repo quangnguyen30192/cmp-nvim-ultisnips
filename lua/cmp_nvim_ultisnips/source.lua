@@ -55,4 +55,8 @@ function source:is_available()
   return vim.g.UltiSnipsExpandTrigger ~= nil
 end
 
+function source:clear_snippet_caches()
+  cmp_snippets.clear_caches()
+end
+
 return source
