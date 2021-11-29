@@ -119,31 +119,32 @@ Note: calling the setup function is only required if you wish to customize this 
 ### Example Configuration
 ```lua
 require("cmp-nvim-ultisnips").setup {
-  documentation = function(snippet_info)
-    return snippet_info.description
+  documentation = function(snippet)
+    return snippet.description
   end
 }
 ```
 
 ### Available Options
-In this section, `snippet_info` is a table that contains the following information about a snippet:
+In this section, `snippet` is a table that contains the following information about a snippet:
 ```lua
-snippet_info = {
-  tab_trigger = ... -- type: string, never nil
-  description = ... -- type: string, optional
-  options = ... -- type: string, optional
-  expression = ... -- type: string, only present for snippets with the 'e' option
+snippet = {
+  trigger = ... -- type: string
+  description = ... -- type: string
+  options = ... -- type: string
 
-  -- type: table of strings, where each string is one line in the snippet definition, never nil
-  content = { ... }
+  -- type: table of strings, where each string is one line in the snippet definition
+  value = { ... }
 }
 ```
+If some value was not specified in the snippet definition, the table will contain an empty string for that key.
+
 ---
 
-`documentation(snippet_info: {})`
+`documentation(snippet: {})`
 
 **Returns**: a string that is shown by cmp in the documentation window.
-If `nil` is returned, the documentation window will not appear for this snippet.
+If an empty string (`""`) is returned, the documentation window will not appear for that snippet.
 
 **Default value:** `require('cmp_nvim_ultisnips.snippets').documentation`
 
