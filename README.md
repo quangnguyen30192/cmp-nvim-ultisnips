@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-  <img alt="Screenshot" title="cmp-nvim-ultisnips" src="screenshots/preview.png" width="75%" height="75%">
+  <img alt="Screenshot" title="cmp-nvim-ultisnips" src="screenshots/preview.png" width="80%" height="80%">
 </p>
 
 ## Installation
@@ -17,7 +17,7 @@ use({
     "quangnguyen30192/cmp-nvim-ultisnips",
     config = function()
       -- optional call to setup (see Customization section)
-      require('cmp-nvim-ultisnips').setup{}
+      require("cmp-nvim-ultisnips").setup{}
     end
   },
   config = function()
@@ -106,25 +106,21 @@ use({
 })
 ```
 
-UltiSnips was auto-removing tab mappings for select mode, that way it was not possible to jump through snippet stops.
-We have to disable this by setting `UltiSnipsRemoveSelectModeMappings = 0` (Credit [JoseConseco](https://github.com/quangnguyen30192/cmp-nvim-ultisnips/issues/5))
-```lua
-use({
-  "SirVer/ultisnips",
-  requires = "honza/vim-snippets",
-  config = function()
-    vim.g.UltiSnipsRemoveSelectModeMappings = 0
-  end,
-})
+## Reloading Snippets
+To avoid having to restart Neovim after you have modified your UltiSnips snippets, you can use the `:CmpUltisnipsReloadSnippets` command
+and e.g. use it in an autocommand:
+```vim
+autocmd BufWritePost *.snippets :CmpUltisnipsReloadSnippets
 ```
+This will automatically reload all of your snippets after saving a snippet file.
 
 ## Customization
 Note: calling the setup function is only required if you wish to customize this plugin.
 ### Example Configuration
 ```lua
-require('cmp-nvim-ultisnips').setup {
+require("cmp-nvim-ultisnips").setup {
   documentation = function(snippet_info)
-    return snippet_info.description or ''
+    return snippet_info.description
   end
 }
 ```
@@ -149,32 +145,36 @@ snippet_info = {
 **Returns**: a string that is shown by cmp in the documentation window.
 If `nil` is returned, the documentation window will not appear for this snippet.
 
-**Default value:**
-```lua
-local cmpu_snippets = require('cmp_nvim_ultisnips.snippets')
+**Default value:** `require('cmp_nvim_ultisnips.snippets').documentation`
 
-documentation = function(snippet_info)
-  local description = ''
-  if snippet_info.description then
-    -- italicize description
-    description = '*' .. snippet_info.description ..  '*'
-  end
-  local header = description .. '\n\n'
-  return header .. cmpu_snippets.format_snippet_content(snippet_info.content)
-end
-```
-This results in the appearance that can be seen in the screenshot at the top of the readme.
+By default, this shows the snippet description at the top of the documentation window
+followed by the snippet content (see screenshot at the top of the readme).
 
 
 ## Credit
 [Compe source for ultisnips](https://github.com/hrsh7th/nvim-compe/blob/master/lua/compe_ultisnips/init.lua)
 
-# Issues
-`honza/vim-snippets` does not work in neovim nightly for the time being. Please check this [issue](https://github.com/quangnguyen30192/cmp-nvim-ultisnips/issues/9)
+## Known Issues
+`honza/vim-snippets` does not work in neovim nightly for the time being. Please check this [issue](https://github.com/quangnguyen30192/cmp-nvim-ultisnips/issues/9).
 
-Neovim team is working on the [fix](https://github.com/neovim/neovim/pull/15632)
+Neovim team is working on the [fix](https://github.com/neovim/neovim/pull/15632).
 
-The temporary solution is
+The temporary solution is to set the runtimepath as follows:
 ```lua
 use {'honza/vim-snippets', rtp = '.'}
 ```
+
+---
+
+UltiSnips was auto-removing tab mappings for select mode, that way it was not possible to jump through snippet stops.
+We have to disable this by setting `UltiSnipsRemoveSelectModeMappings = 0` (Credit [JoseConseco](https://github.com/quangnguyen30192/cmp-nvim-ultisnips/issues/5))
+```lua
+use({
+  "SirVer/ultisnips",
+  requires = "honza/vim-snippets",
+  config = function()
+    vim.g.UltiSnipsRemoveSelectModeMappings = 0
+  end,
+})
+```
+
