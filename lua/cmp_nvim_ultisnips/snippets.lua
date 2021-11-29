@@ -61,7 +61,7 @@ function M.load_snippet_info()
   return snippet_info
 end
 
-local function format_snippet_content(content)
+function M.format_snippet_content(content)
   local snippet_content = {}
 
   table.insert(snippet_content, '```' .. vim.bo.filetype)
@@ -82,7 +82,7 @@ function M.documentation(snippet_info)
     description = '*' .. snippet_info.description ..  '*'
   end
   local header = description .. '\n\n'
-  return header .. format_snippet_content(snippet_info.content)
+  return header .. M.format_snippet_content(snippet_info.content)
 end
 
 return M

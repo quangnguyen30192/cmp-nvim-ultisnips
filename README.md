@@ -1,13 +1,24 @@
 # cmp-nvim-ultisnips
 
-[ultisnips](https://github.com/SirVer/ultisnips) completion source for [nvim-cmp](https://github.com/hrsh7th/nvim-cmp)
+<p align="center">
+  <a href="https://github.com/SirVer/ultisnips">UltiSnips</a> completion source for <a href="https://github.com/hrsh7th/nvim-cmp">nvim-cmp</a>
+</p>
+
+<p align="center">
+  <img alt="Screenshot" title="cmp-nvim-ultisnips" src="screenshots/preview.png" width="75%" height="75%">
+</p>
+
+## Installation
 
 ```lua
--- Installation
 use({
   "hrsh7th/nvim-cmp",
   requires = {
     "quangnguyen30192/cmp-nvim-ultisnips",
+    config = function()
+      -- optional call to setup (see Customization section)
+      require('cmp-nvim-ultisnips').setup{}
+    end
   },
   config = function()
     local cmp = require("cmp")
@@ -95,9 +106,8 @@ use({
 })
 ```
 
-UltiSnip was auto-removing tab mappings for select mode, that leads to we cannot jump through snippet stops
-
-We have to disable this by set `UltiSnipsRemoveSelectModeMappings = 0` (Credit [JoseConseco](https://github.com/quangnguyen30192/cmp-nvim-ultisnips/issues/5))
+UltiSnips was auto-removing tab mappings for select mode, that way it was not possible to jump through snippet stops.
+We have to disable this by setting `UltiSnipsRemoveSelectModeMappings = 0` (Credit [JoseConseco](https://github.com/quangnguyen30192/cmp-nvim-ultisnips/issues/5))
 ```lua
 use({
   "SirVer/ultisnips",
@@ -108,7 +118,55 @@ use({
 })
 ```
 
-# Credit
+## Customization
+Note: calling the setup function is only required if you wish to customize this plugin.
+### Example Configuration
+```lua
+require('cmp-nvim-ultisnips').setup {
+  documentation = function(snippet_info)
+    return snippet_info.description or ''
+  end
+}
+```
+
+### Available Options
+In this section, `snippet_info` is a table that contains the following information about a snippet:
+```lua
+snippet_info = {
+  tab_trigger = ... -- type: string, never nil
+  description = ... -- type: string, optional
+  options = ... -- type: string, optional
+  expression = ... -- type: string, only present for snippets with the 'e' option
+
+  -- type: table of strings, where each string is one line in the snippet definition, never nil
+  content = { ... }
+}
+```
+---
+
+`documentation(snippet_info: {})`
+
+**Returns**: a string that is shown by cmp in the documentation window.
+If `nil` is returned, the documentation window will not appear for this snippet.
+
+**Default value:**
+```lua
+local cmpu_snippets = require('cmp_nvim_ultisnips.snippets')
+
+documentation = function(snippet_info)
+  local description = ''
+  if snippet_info.description then
+    -- italicize description
+    description = '*' .. snippet_info.description ..  '*'
+  end
+  local header = description .. '\n\n'
+  return header .. cmpu_snippets.format_snippet_content(snippet_info.content)
+end
+```
+This results in the appearance that can be seen in the screenshot at the top of the readme.
+
+
+## Credit
 [Compe source for ultisnips](https://github.com/hrsh7th/nvim-compe/blob/master/lua/compe_ultisnips/init.lua)
 
 # Issues
