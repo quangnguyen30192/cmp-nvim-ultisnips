@@ -1,4 +1,4 @@
-local util = require('vim.lsp.util')
+local util = require("vim.lsp.util")
 
 local M = {}
 
@@ -23,23 +23,27 @@ end
 function M.format_snippet_value(value)
   local ft = vim.bo.filetype
   -- turn \\n into \n to get "real" whitespace
-  local unescaped_value = value:gsub('\\([ntrab])', {
-    n = '\n', t = '\t',  r = '\r',  a = '\a',  b = '\b'
+  local unescaped_value = value:gsub("\\([ntrab])", {
+    n = "\n",
+    t = "\t",
+    r = "\r",
+    a = "\a",
+    b = "\b",
   })
-  local snippet_docs = string.format('```%s\n%s\n```', ft, unescaped_value)
+  local snippet_docs = string.format("```%s\n%s\n```", ft, unescaped_value)
   local lines = util.convert_input_to_markdown_lines(snippet_docs)
-  return table.concat(lines, '\n')
+  return table.concat(lines, "\n")
 end
 
 -- Returns the documentation string shown by cmp
 function M.documentation(snippet)
-  local description = ''
-  if snippet.description ~= '' then
+  local description = ""
+  if snippet.description ~= "" then
     -- Italicize description
-    description = '*' .. snippet.description ..  '*'
+    description = "*" .. snippet.description .. "*"
   end
   local formatted_value = M.format_snippet_value(snippet.value)
-  return string.format('%s\n\n%s', description, formatted_value)
+  return string.format("%s\n\n%s", description, formatted_value)
 end
 
 return M

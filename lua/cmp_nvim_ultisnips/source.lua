@@ -1,5 +1,5 @@
-local cmp = require('cmp')
-local cmp_snippets = require('cmp_nvim_ultisnips.snippets')
+local cmp = require("cmp")
+local cmp_snippets = require("cmp_nvim_ultisnips.snippets")
 
 local source = {}
 function source.new(config)
@@ -9,11 +9,11 @@ function source.new(config)
 end
 
 function source:get_keyword_pattern()
-  return '\\%([^[:alnum:][:blank:]]\\|\\w\\+\\)'
+  return "\\%([^[:alnum:][:blank:]]\\|\\w\\+\\)"
 end
 
 function source:get_debug_name()
-  return 'ultisnips'
+  return "ultisnips"
 end
 
 function source:complete(_, callback)
@@ -22,12 +22,12 @@ function source:complete(_, callback)
   local snippets = cmp_snippets.load_snippets(false)
   for _, snippet in pairs(snippets) do
     -- Skip regex and expression snippets for now
-    if not snippet.options:match('[re]') then
+    if not snippet.options:match("[re]") then
       local item = {
-        word =  snippet.trigger,
+        word = snippet.trigger,
         label = snippet.trigger,
         kind = cmp.lsp.CompletionItemKind.Snippet,
-        snippet = snippet
+        snippet = snippet,
       }
       table.insert(items, item)
     end
@@ -40,14 +40,14 @@ function source.resolve(self, completion_item, callback)
   if doc_string ~= nil then
     completion_item.documentation = {
       kind = cmp.lsp.MarkupKind.Markdown,
-      value = doc_string
+      value = doc_string,
     }
   end
   callback(completion_item)
 end
 
 function source:execute(completion_item, callback)
-  vim.call('UltiSnips#ExpandSnippet')
+  vim.call("UltiSnips#ExpandSnippet")
   callback(completion_item)
 end
 
