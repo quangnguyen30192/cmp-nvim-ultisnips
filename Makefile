@@ -1,3 +1,2 @@
-.PHONY: run_tests
-run_tests:
-	vusted lua --output=gtest
+lint:
+	luacheck lua/cmp_nvim_ultisnips

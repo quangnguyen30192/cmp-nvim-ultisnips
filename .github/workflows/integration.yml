@@ -1,35 +1,24 @@
-name: Integration
+name: Linting and style checking
 
-on:
-  push:
-    branches: [main]
-  pull_request:
-    branches: [main]
+on: [push, pull_request]
 
 jobs:
-  Tests:
+  Luacheck:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v2
+      - name: Setup tools
+        run: |
+          sudo apt install -y luarocks
+          sudo luarocks install luacheck
+      - name: Lint
+        run: make lint
 
-      - name: Setup neovim
-        uses: rhysd/action-setup-vim@v1
+  Stylua:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: JohnnyMorganz/stylua-action@1.0.0
         with:
-          neovim: true
-
-      - name: Setup lua
-        uses: leafo/gh-actions-lua@v8
-        with:
-          luaVersion: "luajit-2.1.0-beta3"
-
-      - name: Setup luarocks
-        uses: leafo/gh-actions-luarocks@v4
-
-      - name: Setup test environment
-        shell: bash
-        run: luarocks install vusted
-
-      - name: Run tests
-        shell: bash
-        run: make run_tests
+          token: ${{ secrets.GITHUB_TOKEN }}
+          args: --color always --check lua/
