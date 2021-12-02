@@ -18,15 +18,16 @@ end
 
 function source:complete(_, callback)
   local items = {}
-  local info = cmp_snippets.load_snippet_info()
-  for _, snippet_info in pairs(info) do
-    -- skip regex and expression snippets for now
-    if not snippet_info.options or not snippet_info.options:match('[re]') then
+  -- Retrieve all snippets for now (including not expandable ones)
+  local snippets = cmp_snippets.load_snippets(false)
+  for _, snippet in pairs(snippets) do
+    -- Skip regex and expression snippets for now
+    if not snippet.options:match('[re]') then
       local item = {
-        word =  snippet_info.tab_trigger,
-        label = snippet_info.tab_trigger,
+        word =  snippet.trigger,
+        label = snippet.trigger,
         kind = cmp.lsp.CompletionItemKind.Snippet,
-        userdata = snippet_info,
+        snippet = snippet
       }
       table.insert(items, item)
     end
@@ -35,7 +36,7 @@ function source:complete(_, callback)
 end
 
 function source.resolve(self, completion_item, callback)
-  local doc_string = self.config.documentation(completion_item.userdata)
+  local doc_string = self.config.documentation(completion_item.snippet)
   if doc_string ~= nil then
     completion_item.documentation = {
       kind = cmp.lsp.MarkupKind.Markdown,
