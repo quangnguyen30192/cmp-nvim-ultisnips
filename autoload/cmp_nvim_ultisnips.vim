@@ -19,20 +19,12 @@ else:
 snippets_info = []
 vim.command('let g:_cmpu_current_snippets = []')
 for snippet in snippets:
-    # Use Lua because it was the only way to achieve correct string escaping.
-    # Without this, '" in a trigger string did cause problems when converting
-    # to a vim dict. If you have a better way to do this, please file a PR.
-    # TODO: replace with vim.s (requires Nvim 0.6)
-    vim.command("lua vim.b._cmpu_snippet_trigger = [[%s]]" % str(snippet._trigger))
-    vim.command("lua vim.b._cmpu_snippet_description = [[%s]]" % str(snippet._description))
-    vim.command("lua vim.b._cmpu_snippet_options = [[%s]]" % str(snippet._opts))
-    vim.command("lua vim.b._cmpu_snippet_value = [[%s]]" % str(snippet._value))
     vim.command(
       "call add(g:_cmpu_current_snippets, {"\
-        "'trigger': b:_cmpu_snippet_trigger,"\
-        "'description': b:_cmpu_snippet_description,"\
-        "'options': b:_cmpu_snippet_options,"\
-        "'value': b:_cmpu_snippet_value,"\
+        "'trigger': pyxeval('str(snippet._trigger)'),"\
+        "'description': pyxeval('str(snippet._description)'),"\
+        "'options': pyxeval('str(snippet._opts)'),"\
+        "'value': pyxeval('str(snippet._value)'),"\
       "})"
     )
 EOF
