@@ -146,7 +146,7 @@ If some value was not specified in the snippet definition, the table will contai
 **Returns**: a string that is shown by cmp in the documentation window.
 If an empty string (`""`) is returned, the documentation window will not appear for that snippet.
 
-**Default value:** `require('cmp_nvim_ultisnips.snippets').documentation`
+**Default value:** `require("cmp_nvim_ultisnips.snippets").documentation`
 
 By default, this shows the snippet description at the top of the documentation window
 followed by the snippet content (see screenshot at the top of the readme).
@@ -162,7 +162,7 @@ Neovim team is working on the [fix](https://github.com/neovim/neovim/pull/15632)
 
 The temporary solution is to set the runtimepath as follows:
 ```lua
-use {'honza/vim-snippets', rtp = '.'}
+use {"honza/vim-snippets", rtp = "."}
 ```
 
 ---
