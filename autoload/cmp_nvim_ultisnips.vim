@@ -10,7 +10,7 @@ import vim
 from UltiSnips import vim_helper
 
 expandable_only = vim.eval("a:expandable_only")
-if expandable_only == 1:
+if expandable_only == "True":
     before = vim_helper.buf.line_till_cursor
     snippets = UltiSnips_Manager._snips(before, True)
 else:

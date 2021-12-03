@@ -6,11 +6,15 @@ local M = {}
 local snippets_info_for_ft = {}
 
 function M.load_snippets(expandable_only)
+  if expandable_only then
+    -- Do not cache snippets since the set of expandable
+    -- snippets can change on every keystroke.
+    return vim.fn["cmp_nvim_ultisnips#get_current_snippets"](true)
+  end
   local ft = vim.bo.filetype
   local snippets_info = snippets_info_for_ft[ft]
   if not snippets_info then
-    local expandable = expandable_only and 1 or 0
-    snippets_info = vim.fn["cmp_nvim_ultisnips#get_current_snippets"](expandable)
+    snippets_info = vim.fn["cmp_nvim_ultisnips#get_current_snippets"](false)
     snippets_info_for_ft[ft] = snippets_info
   end
   return snippets_info

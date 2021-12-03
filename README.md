@@ -119,6 +119,7 @@ Note: calling the setup function is only required if you wish to customize this 
 ### Example Configuration
 ```lua
 require("cmp-nvim-ultisnips").setup {
+  show_snippets = "all",
   documentation = function(snippet)
     return snippet.description
   end
@@ -141,9 +142,18 @@ If some value was not specified in the snippet definition, the table will contai
 
 ---
 
+`show_snippets: "expandable" | "all"`
+
+If set to `"expandable"`, only those snippets currently expandable by UltiSnips will be
+shown by cmp. `"all"` will show all snippets for the current filetype.
+
+**Default value:** `"expandable"`
+
+---
+
 `documentation(snippet: {})`
 
-**Returns**: a string that is shown by cmp in the documentation window.
+**Returns:** a string that is shown by cmp in the documentation window.
 If an empty string (`""`) is returned, the documentation window will not appear for that snippet.
 
 **Default value:** `require("cmp_nvim_ultisnips.snippets").documentation`
@@ -164,8 +174,6 @@ The temporary solution is to set the runtimepath as follows:
 ```lua
 use {"honza/vim-snippets", rtp = "."}
 ```
-
----
 
 UltiSnips was auto-removing tab mappings for select mode, that way it was not possible to jump through snippet stops.
 We have to disable this by setting `UltiSnipsRemoveSelectModeMappings = 0` (Credit [JoseConseco](https://github.com/quangnguyen30192/cmp-nvim-ultisnips/issues/5))
