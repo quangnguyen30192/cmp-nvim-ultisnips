@@ -5,6 +5,7 @@ local source = {}
 function source.new(config)
   local self = setmetatable({}, { __index = source })
   self.config = config
+  self.expandable_only = config.show_snippets == "expandable"
   return self
 end
 
@@ -16,10 +17,9 @@ function source:get_debug_name()
   return "ultisnips"
 end
 
-function source:complete(_, callback)
+function source.complete(self, _, callback)
   local items = {}
-  -- Retrieve all snippets for now (including not expandable ones)
-  local snippets = cmp_snippets.load_snippets(false)
+  local snippets = cmp_snippets.load_snippets(self.expandable_only)
   for _, snippet in pairs(snippets) do
     -- Skip regex and expression snippets for now
     if not snippet.options:match("[re]") then
