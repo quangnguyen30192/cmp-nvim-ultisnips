@@ -1,5 +1,5 @@
 local cmp = require("cmp")
-local cmp_snippets = require("cmp_nvim_ultisnips.snippets")
+local cmpu_snippets = require("cmp_nvim_ultisnips.snippets")
 
 local source = {}
 function source.new(config)
@@ -19,7 +19,7 @@ end
 
 function source.complete(self, _, callback)
   local items = {}
-  local snippets = cmp_snippets.load_snippets(self.expandable_only)
+  local snippets = cmpu_snippets.load_snippets(self.expandable_only)
   for _, snippet in pairs(snippets) do
     -- Skip regex and expression snippets for now
     if not snippet.options:match("[re]") then
@@ -57,7 +57,7 @@ function source:is_available()
 end
 
 function source:clear_snippet_caches()
-  cmp_snippets.clear_caches()
+  cmpu_snippets.clear_caches()
 end
 
 return source
