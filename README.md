@@ -17,7 +17,7 @@ use({
     "quangnguyen30192/cmp-nvim-ultisnips",
     config = function()
       -- optional call to setup (see Customization section)
-      require("cmp-nvim-ultisnips").setup{}
+      require("cmp_nvim_ultisnips").setup{}
     end
   },
   config = function()
@@ -118,7 +118,7 @@ This will automatically reload all of your snippets after saving a snippet file.
 Note: calling the setup function is only required if you wish to customize this plugin.
 ### Example Configuration
 ```lua
-require("cmp-nvim-ultisnips").setup {
+require("cmp_nvim_ultisnips").setup {
   show_snippets = "all",
   documentation = function(snippet)
     return snippet.description
