@@ -16,7 +16,7 @@ use({
   requires = {
     "quangnguyen30192/cmp-nvim-ultisnips",
     config = function()
-      -- optional call to setup (see Customization section)
+      -- optional call to setup (see customization section)
       require("cmp_nvim_ultisnips").setup{}
     end
   },
@@ -44,11 +44,11 @@ use({
         { name = "ultisnips" },
         -- more sources
       },
-      -- Configuration for <TAB> people
+      -- Configuration for <Tab> people
       -- <Tab> and <S-Tab>: cycle forward and backward through completion items
-         as well as snippet tabstops and placeholders
+      -- as well as snippet tabstops and placeholders
       -- <Tab> to expand snippet when no completion item is selected
-         (you don't need to select the snippet from the completion item to expand)
+      -- (you don't need to select the snippet from the completion item to expand)
       -- <C-space> to expand the selected snippet from the completion menu
       mapping = {
         ["<C-Space>"] = cmp.mapping(function(fallback)
@@ -107,12 +107,15 @@ use({
 ```
 
 ## Reloading Snippets
-To avoid having to restart Neovim after you have modified your UltiSnips snippets, you can use the `:CmpUltisnipsReloadSnippets` command
-and e.g. use it in an autocommand:
+When the option `show_snippets` is set to `expandable` (see customization section; this is the default),
+the snippets are not cached and thus automatically reloaded after you modified your snippet definitions.
+
+When set to `all`, you can manually reload the snippets with the command
+`:CmpUltisnipsReloadSnippets` and e.g. use it in an autocommand:
+
 ```vim
 autocmd BufWritePost *.snippets :CmpUltisnipsReloadSnippets
 ```
-This will automatically reload all of your snippets after saving a snippet file.
 
 ## Customization
 Note: calling the setup function is only required if you wish to customize this plugin.
@@ -127,43 +130,35 @@ require("cmp_nvim_ultisnips").setup {
 ```
 
 ### Available Options
-In this section, `snippet` is a table that contains the following information about a snippet:
-```lua
-snippet = {
-  trigger = ... -- type: string
-  description = ... -- type: string
-  options = ... -- type: string
+In this section, `snippet` is a table that contains the following keys (each value is a string):
 
-  -- type: table of strings, where each string is one line in the snippet definition
-  value = { ... }
-}
-```
-If some value was not specified in the snippet definition, the table will contain an empty string for that key.
+- trigger, description, options, value
 
 ---
 
 `show_snippets: "expandable" | "all"`
 
 If set to `"expandable"`, only those snippets currently expandable by UltiSnips will be
-shown by cmp. `"all"` will show all snippets for the current filetype.
+shown by cmp. `"all"` will show all snippets for the current filetype except regular
+expression snippets (option `r`) and custom context snippets (option `e`).
 
-**Default value:** `"expandable"`
+**Default:** `"expandable"`
 
 ---
 
-`documentation(snippet: {})`
+`documentation(snippet: {}): function`
 
 **Returns:** a string that is shown by cmp in the documentation window.
 If an empty string (`""`) is returned, the documentation window will not appear for that snippet.
 
-**Default value:** `require("cmp_nvim_ultisnips.snippets").documentation`
+**Default:** `require("cmp_nvim_ultisnips.snippets").documentation`
 
 By default, this shows the snippet description at the top of the documentation window
 followed by the snippet content (see screenshot at the top of the readme).
 
 
 ## Credit
-[Compe source for ultisnips](https://github.com/hrsh7th/nvim-compe/blob/master/lua/compe_ultisnips/init.lua)
+[Compe source for UltiSnips](https://github.com/hrsh7th/nvim-compe/blob/master/lua/compe_ultisnips/init.lua)
 
 ## Known Issues
 `honza/vim-snippets` does not work in neovim nightly for the time being. Please check this [issue](https://github.com/quangnguyen30192/cmp-nvim-ultisnips/issues/9).

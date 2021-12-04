@@ -3,7 +3,7 @@ local util = require("vim.lsp.util")
 local M = {}
 
 -- Caches all retrieved snippets information per filetype
-local snippets_info_for_ft = {}
+local snippets_for_ft = {}
 
 function M.load_snippets(expandable_only)
   if expandable_only then
@@ -12,16 +12,16 @@ function M.load_snippets(expandable_only)
     return vim.fn["cmp_nvim_ultisnips#get_current_snippets"](true)
   end
   local ft = vim.bo.filetype
-  local snippets_info = snippets_info_for_ft[ft]
+  local snippets_info = snippets_for_ft[ft]
   if not snippets_info then
     snippets_info = vim.fn["cmp_nvim_ultisnips#get_current_snippets"](false)
-    snippets_info_for_ft[ft] = snippets_info
+    snippets_for_ft[ft] = snippets_info
   end
   return snippets_info
 end
 
 function M.clear_caches()
-  snippets_info_for_ft = {}
+  snippets_for_ft = {}
 end
 
 function M.format_snippet_value(value)
@@ -41,12 +41,12 @@ end
 
 -- Returns the documentation string shown by cmp
 function M.documentation(snippet)
-  local description = ""
-  if snippet.description ~= "" then
-    -- Italicize description
-    description = "*" .. snippet.description .. "*"
-  end
   local formatted_value = M.format_snippet_value(snippet.value)
+  if snippet.description == "" then
+    return formatted_value
+  end
+  -- Italicize description
+  local description = "*" .. snippet.description .. "*"
   return string.format("%s\n\n%s", description, formatted_value)
 end
 
