@@ -30,7 +30,7 @@ use({
       return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
     end
 
-    local press = function(key)
+    local t = function(key)
       vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(key, true, true, true), "n", true)
     end
 
@@ -54,11 +54,9 @@ use({
         ["<C-Space>"] = cmp.mapping(function(fallback)
           if cmp.visible() then
             if vim.fn["UltiSnips#CanExpandSnippet"]() == 1 then
-              vim.fn["UltiSnips#ExpandSnippet"]()
+              t("<C-r>=[UltiSnips#CursorMoved(), UltiSnips#ExpandSnippet()][1]<cr>")
             end
             cmp.select_next_item()
-          elseif has_any_words_before() then
-            press("<Space>")
           else
             fallback()
           end
@@ -70,13 +68,11 @@ use({
         }),
         ["<Tab>"] = cmp.mapping(function(fallback)
           if cmp.get_selected_entry() == nil and vim.fn["UltiSnips#CanExpandSnippet"]() == 1 then
-            vim.fn["UltiSnips#ExpandSnippet"]()
+            t("<C-r>=[UltiSnips#CursorMoved(), UltiSnips#ExpandSnippet()][1]<cr>")
           elseif vim.fn["UltiSnips#CanJumpForwards"]() == 1 then
-            vim.fn["UltiSnips#JumpForwards"]()
+            t("<C-r>=[UltiSnips#CursorMoved(), UltiSnips#JumpForwards()][1]<cr>")
           elseif cmp.visible() then
             cmp.select_next_item()
-          elseif has_any_words_before() then
-            press("<Tab>")
           else
             fallback()
           end
@@ -88,7 +84,7 @@ use({
         }),
         ["<S-Tab>"] = cmp.mapping(function(fallback)
           if vim.fn["UltiSnips#CanJumpBackwards"]() == 1 then
-            vim.fn["UltiSnips#JumpBackwards"]()
+            t("<C-r>=[UltiSnips#CursorMoved(), UltiSnips#JumpBackwards()][1]<cr>")
           elseif cmp.visible() then
             cmp.select_prev_item()
           else
