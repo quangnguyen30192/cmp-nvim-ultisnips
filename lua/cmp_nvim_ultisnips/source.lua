@@ -52,7 +52,7 @@ function source:execute(completion_item, callback)
 end
 
 function source:is_available()
-  -- if UltiSnips is installed then this variable should be defined
+  -- If UltiSnips is installed then this variable should be defined
   return vim.g.UltiSnipsExpandTrigger ~= nil
 end
 
