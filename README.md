@@ -44,7 +44,7 @@ use({
       mapping = {
         ["<Tab>"] = cmp.mapping(function(fallback)
           cmp_ultisnips_mappings.expand_or_jump_forwards(fallback)
-        end), {
+        end, {
           "i",
           "s",
           -- add this line when using cmp-cmdline:
@@ -52,7 +52,7 @@ use({
         }),
         ["<S-Tab>"] = cmp.mapping(function(fallback)
           cmp_ultisnips_mappings.jump_backwards(fallback)
-        end), {
+        end, {
           "i",
           "s",
           -- add this line when using cmp-cmdline:
