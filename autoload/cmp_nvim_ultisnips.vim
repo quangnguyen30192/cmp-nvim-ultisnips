@@ -1,6 +1,6 @@
 " Retrieves additional snippet information that is not directly accessible
 " using the UltiSnips API functions. Returns a list of tables (one table
-" per snippet) with the keys "trigger", "description" and "options".
+" per snippet) with the keys "trigger", "description", "options" and "value".
 "
 " If 'expandable_only' is 1, only expandable snippets are returned, otherwise all
 " snippets for the current filetype are returned.
@@ -32,6 +32,11 @@ return g:_cmpu_current_snippets
 endfunction
 
 " Define silent mappings
-imap <silent> <Plug>(cmpu-expand) <C-r>=[UltiSnips#CursorMoved(), UltiSnips#ExpandSnippet()][1]<cr>
-imap <silent> <Plug>(cmpu-jump-forwards) <C-r>=[UltiSnips#CursorMoved(), UltiSnips#JumpForwards()][1]<cr>
-imap <silent> <Plug>(cmpu-jump-backwards) <C-r>=[UltiSnips#CursorMoved(), UltiSnips#JumpBackwards()][1]<cr>
+imap <silent> <Plug>(cmpu-expand)
+\ <C-r>=[UltiSnips#CursorMoved(), UltiSnips#ExpandSnippet()][1]<cr>
+
+imap <silent> <Plug>(cmpu-jump-forwards)
+\ <C-r>=[UltiSnips#CursorMoved(), UltiSnips#JumpForwards()][1]<cr>
+
+imap <silent> <Plug>(cmpu-jump-backwards)
+\ <C-r>=[UltiSnips#CursorMoved(), UltiSnips#JumpBackwards()][1]<cr>
