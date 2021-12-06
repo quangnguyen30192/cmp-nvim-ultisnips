@@ -8,7 +8,7 @@
   <img alt="Screenshot" title="cmp-nvim-ultisnips" src="screenshots/preview.png" width="80%" height="80%">
 </p>
 
-## Installation
+## Installation and Recommended Mappings
 
 ```lua
 use({
@@ -21,20 +21,8 @@ use({
     end
   },
   config = function()
-    local cmp = require("cmp")
-    local has_any_words_before = function()
-      if vim.api.nvim_buf_get_option(0, "buftype") == "prompt" then
-        return false
-      end
-      local line, col = unpack(vim.api.nvim_win_get_cursor(0))
-      return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
-    end
-
-    local t = function(key)
-      vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(key, true, true, true), "n", true)
-    end
-
-    cmp.setup({
+    local cmp_ultisnips_mappings = require("cmp_nvim_ultisnips.mappings")
+    require("cmp").setup({
       snippet = {
         expand = function(args)
           vim.fn["UltiSnips#Anon"](args.body)
@@ -44,53 +32,27 @@ use({
         { name = "ultisnips" },
         -- more sources
       },
-      -- Configuration for <Tab> people
-      -- <Tab> and <S-Tab>: cycle forward and backward through completion items
-      -- as well as snippet tabstops and placeholders
-      -- <Tab> to expand snippet when no completion item is selected
-      -- (you don't need to select the snippet from the completion item to expand)
-      -- <C-space> to expand the selected snippet from the completion menu
+      --[[
+      Configuration for <Tab> people:
+      <Tab> (and <S-Tab>)
+        cycle forward (backward) through completion items
+        and snippet tabstops / placeholders
+
+      <Tab>
+        to expand a snippet when no completion item is selected
+      ]]
       mapping = {
-        ["<C-Space>"] = cmp.mapping(function(fallback)
-          if cmp.visible() then
-            if vim.fn["UltiSnips#CanExpandSnippet"]() == 1 then
-              t("<C-r>=[UltiSnips#CursorMoved(), UltiSnips#ExpandSnippet()][1]<cr>")
-            end
-            cmp.select_next_item()
-          else
-            fallback()
-          end
-        end, {
-          "i",
-          "s",
-          -- add this line when using cmp-cmdline:
-          -- "c",
-        }),
         ["<Tab>"] = cmp.mapping(function(fallback)
-          if cmp.get_selected_entry() == nil and vim.fn["UltiSnips#CanExpandSnippet"]() == 1 then
-            t("<C-r>=[UltiSnips#CursorMoved(), UltiSnips#ExpandSnippet()][1]<cr>")
-          elseif vim.fn["UltiSnips#CanJumpForwards"]() == 1 then
-            t("<C-r>=[UltiSnips#CursorMoved(), UltiSnips#JumpForwards()][1]<cr>")
-          elseif cmp.visible() then
-            cmp.select_next_item()
-          else
-            fallback()
-          end
-        end, {
+          cmp_ultisnips_mappings.expand_or_jump_forwards(fallback)
+        end), {
           "i",
           "s",
           -- add this line when using cmp-cmdline:
           -- "c",
         }),
         ["<S-Tab>"] = cmp.mapping(function(fallback)
-          if vim.fn["UltiSnips#CanJumpBackwards"]() == 1 then
-            t("<C-r>=[UltiSnips#CursorMoved(), UltiSnips#JumpBackwards()][1]<cr>")
-          elseif cmp.visible() then
-            cmp.select_prev_item()
-          else
-            fallback()
-          end
-        end, {
+          cmp_ultisnips_mappings.jump_backwards(fallback)
+        end), {
           "i",
           "s",
           -- add this line when using cmp-cmdline:
