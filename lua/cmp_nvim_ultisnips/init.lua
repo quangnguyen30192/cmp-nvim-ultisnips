@@ -1,26 +1,11 @@
 local cmpu_source = require("cmp_nvim_ultisnips.source")
-local cmpu_snippets = require("cmp_nvim_ultisnips.snippets")
+local cmpu_config = require("cmp_nvim_ultisnips.config")
 
 local M = {}
 
-local default_config = {
-  show_snippets = "expandable",
-  documentation = cmpu_snippets.documentation,
-}
-
-local user_config = default_config
+local user_config = cmpu_config.default_config
 function M.setup(config)
-  user_config = vim.tbl_deep_extend("force", default_config, config)
-  vim.validate({
-    show_snippets = {
-      user_config.show_snippets,
-      function(arg)
-        return arg == "expandable" or arg == "all"
-      end,
-      "either 'expandable' or 'all'",
-    },
-    documentation = { user_config.documentation, "function" },
-  })
+  user_config = cmpu_config.get_user_config(config)
 end
 
 local source
