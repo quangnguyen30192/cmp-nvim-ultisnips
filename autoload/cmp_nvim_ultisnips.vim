@@ -7,7 +7,7 @@
 function! cmp_nvim_ultisnips#get_current_snippets(expandable_only)
 pythonx << EOF
 import vim
-from UltiSnips import vim_helper
+from UltiSnips import UltiSnips_Manager, vim_helper
 
 expandable_only = vim.eval("a:expandable_only")
 if expandable_only == "True":
