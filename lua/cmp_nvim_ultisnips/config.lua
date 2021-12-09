@@ -5,6 +5,7 @@ local M = {}
 M.default_config = {
   show_snippets = "expandable",
   documentation = cmpu_snippets.documentation,
+  filetype_source = "treesitter",
 }
 
 function M.get_user_config(config)
@@ -18,6 +19,13 @@ function M.get_user_config(config)
       "either 'expandable' or 'all'",
     },
     documentation = { user_config.documentation, "function" },
+    filetype_source = {
+      user_config.filetype_source,
+      function(arg)
+        return arg == "treesitter" or arg == "ultisnips_default"
+      end,
+      "either 'treesitter' or 'ultisnips_default'",
+    },
   })
   return user_config
 end
