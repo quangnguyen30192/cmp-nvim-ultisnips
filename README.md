@@ -119,15 +119,6 @@ followed by the snippet content (see screenshot at the top of the readme).
 [Compe source for UltiSnips](https://github.com/hrsh7th/nvim-compe/blob/master/lua/compe_ultisnips/init.lua)
 
 ## Known Issues
-`honza/vim-snippets` does not work in neovim nightly for the time being. Please check this [issue](https://github.com/quangnguyen30192/cmp-nvim-ultisnips/issues/9).
-
-Neovim team is working on the [fix](https://github.com/neovim/neovim/pull/15632).
-
-The temporary solution is to set the runtimepath as follows:
-```lua
-use {"honza/vim-snippets", rtp = "."}
-```
-
 UltiSnips was auto-removing tab mappings for select mode, that way it was not possible to jump through snippet stops.
 We have to disable this by setting `UltiSnipsRemoveSelectModeMappings = 0` (Credit [JoseConseco](https://github.com/quangnguyen30192/cmp-nvim-ultisnips/issues/5))
 ```lua
