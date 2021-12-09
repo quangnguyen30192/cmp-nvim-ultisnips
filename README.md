@@ -8,6 +8,11 @@
   <img alt="Screenshot" title="cmp-nvim-ultisnips" src="screenshots/preview.png" width="80%" height="80%">
 </p>
 
+## Features
+- **Composable Mappings**: get rid of boilerplate code in your config
+- **Treesitter Integration**: show snippets based on the filetype at your cursor position
+- **Customization**: change which and how snippets are displayed by cmp
+
 ## Installation and Recommended Mappings
 
 Check out the [Mappings](#Mappings) section if you want to define your own mappings.
@@ -20,7 +25,9 @@ use({
     config = function()
       -- optional call to setup (see customization section)
       require("cmp_nvim_ultisnips").setup{}
-    end
+    end,
+    -- If you want to enable filetype detection based on treesitter:
+    -- requires = { "nvim-treesitter/nvim-treesitter" },
   },
   config = function()
     local cmp_ultisnips_mappings = require("cmp_nvim_ultisnips.mappings")
@@ -96,6 +103,18 @@ Then the `command` function is run. If none match, `fallback` is called.
 
 ### Available Options
 
+`filetype_source: "treesitter" | "ultisnips_default"`
+
+Determines how the filetype of a buffer is identified. This option affects which snippets are available by UltiSnips.
+If set to `"treesitter"` and the [`nvim-treesitter`](https://github.com/nvim-treesitter/nvim-treesitter) plugin is installed, only snippets
+that match the filetype at the current cursor position are shown (as well as snippets included via UltiSnips' `extends` directive). Otherwise, or if
+treesitter could not determine the filetype at the current position, the available snippets
+are handled entirely by UltiSnips.
+
+**Default:** `"treesitter"`
+
+---
+
 `show_snippets: "expandable" | "all"`
 
 If set to `"expandable"`, only those snippets currently expandable by UltiSnips will be
@@ -135,6 +154,7 @@ Note: calling the setup function is only required if you wish to customize this 
 
 ```lua
 require("cmp_nvim_ultisnips").setup {
+  filetype_source = "treesitter",
   show_snippets = "all",
   documentation = function(snippet)
     return snippet.description
@@ -143,12 +163,13 @@ require("cmp_nvim_ultisnips").setup {
 ```
 
 ## Credit
-[Compe source for UltiSnips](https://github.com/hrsh7th/nvim-compe/blob/master/lua/compe_ultisnips/init.lua)
+- [Compe source for UltiSnips](https://github.com/hrsh7th/nvim-compe/blob/master/lua/compe_ultisnips/init.lua)
+- The Treesitter integration was inspired by [this Luasnip PR](https://github.com/L3MON4D3/LuaSnip/pull/226)
 
 ## Known Issues
 
 UltiSnips was auto-removing tab mappings for select mode, that way it was not possible to jump through snippet stops.
-We have to disable this by setting `UltiSnipsRemoveSelectModeMappings = 0` (Credit [JoseConseco](https://github.com/quangnguyen30192/cmp-nvim-ultisnips/issues/5))
+We have to disable this by setting `UltiSnipsRemoveSelectModeMappings = 0` (credit to [JoseConseco](https://github.com/quangnguyen30192/cmp-nvim-ultisnips/issues/5)).
 ```lua
 use({
   "SirVer/ultisnips",
