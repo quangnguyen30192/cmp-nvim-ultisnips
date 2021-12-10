@@ -10,6 +10,8 @@ end
 
 local source
 function M.create_source()
+  -- Source UltiSnips file in case it is not loaded yet (ref. #49)
+  vim.cmd("runtime! plugin/UltiSnips.vim")
   source = cmpu_source.new(user_config)
   return source
 end
