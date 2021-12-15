@@ -12,11 +12,11 @@ if not ok_utils then
   ts_utils = nil
 end
 
-local function get_ft_at_cursor()
-  if not ok_parsers or not ok_utils then
-    return nil
-  end
+function M.is_available()
+  return ok_parsers and ok_utils
+end
 
+local function get_ft_at_cursor()
   local cur_node = ts_utils.get_node_at_cursor()
   if cur_node then
     local parser = ts_parsers.get_parser()
@@ -28,7 +28,7 @@ end
 local cur_ft_at_cursor
 function M.set_filetype()
   local new_ft = get_ft_at_cursor()
-  if new_ft ~= cur_ft_at_cursor and new_ft ~= vim.bo.filetype then
+  if new_ft ~= nil and new_ft ~= cur_ft_at_cursor and new_ft ~= vim.bo.filetype then
     vim.fn["cmp_nvim_ultisnips#set_filetype"](new_ft)
     cur_ft_at_cursor = new_ft
   end
