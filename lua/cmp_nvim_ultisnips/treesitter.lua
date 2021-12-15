@@ -20,7 +20,12 @@ local function get_ft_at_cursor()
   local cur_node = ts_utils.get_node_at_cursor()
   if cur_node then
     local parser = ts_parsers.get_parser()
-    return parser:language_for_range({ cur_node:range() }):lang()
+    local lang = parser:language_for_range({ cur_node:range() }):lang()
+    if ts_parsers.list[lang] ~= nil then
+      -- UltiSnips expects a filetype; if filetype is not specified for a parser,
+      -- the filetype is the same as lang, so lang can be safely used
+      return ts_parsers.list[lang].filetype or lang
+    end
   end
   return nil
 end
