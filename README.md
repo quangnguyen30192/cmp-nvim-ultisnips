@@ -165,17 +165,3 @@ require("cmp_nvim_ultisnips").setup {
 ## Credit
 - [Compe source for UltiSnips](https://github.com/hrsh7th/nvim-compe/blob/master/lua/compe_ultisnips/init.lua)
 - The Treesitter integration was inspired by [this Luasnip PR](https://github.com/L3MON4D3/LuaSnip/pull/226)
-
-## Known Issues
-
-UltiSnips was auto-removing tab mappings for select mode, that way it was not possible to jump through snippet stops.
-We have to disable this by setting `UltiSnipsRemoveSelectModeMappings = 0` (credit to [JoseConseco](https://github.com/quangnguyen30192/cmp-nvim-ultisnips/issues/5)).
-```lua
-use({
-  "SirVer/ultisnips",
-  requires = "honza/vim-snippets",
-  config = function()
-    vim.g.UltiSnipsRemoveSelectModeMappings = 0
-  end,
-})
-```

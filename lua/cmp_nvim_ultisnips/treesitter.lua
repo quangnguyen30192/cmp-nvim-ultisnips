@@ -40,7 +40,7 @@ function M.set_filetype()
 end
 
 function M.reset_filetype()
-  if cur_ft_at_cursor ~= nil and cur_ft_at_cursor ~= vim.bo.filetype then
+  if cur_ft_at_cursor ~= nil then
     vim.fn["cmp_nvim_ultisnips#reset_filetype"]()
     cur_ft_at_cursor = nil
   end
