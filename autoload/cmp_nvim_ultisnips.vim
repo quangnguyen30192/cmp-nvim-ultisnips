@@ -84,4 +84,4 @@ imap <silent> <Plug>(cmpu-jump-backwards)
 \ <C-r>=UltiSnips#JumpBackwards()<cr>
 
 smap <silent> <Plug>(cmpu-jump-backwards)
-\ <C-r>=UltiSnips#JumpBackwards()<cr>
+\ <Esc>:call UltiSnips#JumpBackwards()<cr>
