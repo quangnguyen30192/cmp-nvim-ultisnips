@@ -11,6 +11,7 @@
 ## Features
 - **Composable Mappings**: get rid of boilerplate code in your config
 - **Treesitter Integration**: show snippets based on the filetype at your cursor position
+- **Regular Expression Snippets**: snippets with the 'r' option are supported
 - **Customization**: change which and how snippets are displayed by cmp
 
 ## Installation and Recommended Mappings

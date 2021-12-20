@@ -13,11 +13,12 @@ from UltiSnips import UltiSnips_Manager, vim_helper
 
 if vim.eval("a:expandable_only") == "True":
     before = vim_helper.buf.line_till_cursor
+    vim.command("let g:_cmpu_line_till_cursor = py3eval('before')")
     snippets = UltiSnips_Manager._snips(before, True)
 else:
     snippets = UltiSnips_Manager._snips("", True)
 
-vim.command('let g:_cmpu_current_snippets = []')
+vim.command("let g:_cmpu_current_snippets = []")
 for snippet in snippets:
     vim.command(
       "call add(g:_cmpu_current_snippets, {"
