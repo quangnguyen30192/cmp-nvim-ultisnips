@@ -13,7 +13,6 @@ from UltiSnips import UltiSnips_Manager, vim_helper
 
 if vim.eval("a:expandable_only") == "True":
     before = vim_helper.buf.line_till_cursor
-    vim.command("let g:_cmpu_line_till_cursor = py3eval('before')")
     snippets = UltiSnips_Manager._snips(before, True)
 else:
     snippets = UltiSnips_Manager._snips("", True)
@@ -26,6 +25,7 @@ for snippet in snippets:
       "'description': py3eval('str(snippet._description)'),"
       "'options': py3eval('str(snippet._opts)'),"
       "'value': py3eval('str(snippet._value)'),"
+      "'matched': py3eval('str(snippet._matched)'),"
       "})"
     )
 EOF
