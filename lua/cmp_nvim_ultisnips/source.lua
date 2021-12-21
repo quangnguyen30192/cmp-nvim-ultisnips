@@ -32,9 +32,9 @@ function source.complete(self, _, callback)
       local is_regex_snippet = snippet.options:match("r")
       -- Avoid expanding a regex snippet with an invalid insertText when self.expandable_only == False
       -- (_cmpu_line_till_cursor is only set when self.expandable_only == True)
-      if not is_regex_snippet or is_regex_snippet and self.expandable_only then
+      if not is_regex_snippet then
         local item = {
-          insertText = vim.g._cmpu_line_till_cursor or snippet.trigger,
+          insertText = snippet.trigger,
           label = snippet.trigger,
           kind = cmp.lsp.CompletionItemKind.Snippet,
           snippet = snippet,
