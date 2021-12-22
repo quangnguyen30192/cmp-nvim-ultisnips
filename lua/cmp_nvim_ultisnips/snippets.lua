@@ -12,12 +12,12 @@ function M.load_snippets(expandable_only)
     return vim.fn["cmp_nvim_ultisnips#get_current_snippets"](true)
   end
   local ft = vim.bo.filetype
-  local snippets_info = snippets_for_ft[ft]
-  if not snippets_info then
-    snippets_info = vim.fn["cmp_nvim_ultisnips#get_current_snippets"](false)
-    snippets_for_ft[ft] = snippets_info
+  local snippets = snippets_for_ft[ft]
+  if not snippets then
+    snippets = vim.fn["cmp_nvim_ultisnips#get_current_snippets"](false)
+    snippets_for_ft[ft] = snippets
   end
-  return snippets_info
+  return snippets
 end
 
 function M.clear_caches()
@@ -45,8 +45,8 @@ function M.documentation(snippet)
   if snippet.description == "" then
     return formatted_value
   end
-  -- Italicize description
-  local description = "*" .. snippet.description .. "*"
+  -- Remove surrounding quotes and italicize
+  local description = "*" .. snippet.description:sub(2, -2) .. "*"
   return string.format("%s\n\n%s", description, formatted_value)
 end
 
