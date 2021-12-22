@@ -11,12 +11,25 @@
 ## Features
 - **Composable Mappings**: get rid of boilerplate code in your config
 - **Treesitter Integration**: show snippets based on the filetype at your cursor position
-- **Regular Expression Snippets**: snippets with the 'r' option are supported
+- **Regular Expression Snippets**: snippets with the `r` option are supported
 - **Customization**: change which and how snippets are displayed by cmp
+
+## Dependencies
+- Neovim ≥ 0.5
+- [nvim-cmp](https://github.com/hrsh7th/nvim-cmp)
+- [UltiSnips](https://github.com/SirVer/ultisnips)
+- [nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter) (optional,
+  requires Neovim nightly)
 
 ## Installation and Recommended Mappings
 
-Check out the [Mappings](#Mappings) section if you want to define your own mappings.
+Use your favourite package manager to install this plugin:
+- vim-plug: `Plug "quangnguyen30192/cmp-nvim-ultisnips"`
+- packer.nvim: `use("quangnguyen30192/cmp-nvim-ultisnips")`
+
+You also need to add `ultisnips` to your cmp sources.
+
+Here is an example using packer.nvim:
 
 ```lua
 use({
@@ -130,7 +143,7 @@ or by using an autocommand:
 autocmd BufWritePost *.snippets :CmpUltisnipsReloadSnippets
 ```
 
-Expression snippets (option `r`) and custom context snippets (option `e`) are never shown.
+Custom context snippets (option `e`) are currently not available.
 
 **Default:** `"expandable"`
 
