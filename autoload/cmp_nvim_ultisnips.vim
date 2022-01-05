@@ -60,7 +60,7 @@ endfunction
 function! cmp_nvim_ultisnips#setup_treesitter_autocmds()
   augroup cmp_nvim_ultisnips
     autocmd!
-    autocmd CursorMovedI * lua require("cmp_nvim_ultisnips.treesitter").set_filetype()
+    autocmd TextChangedI,TextChangedP * lua require("cmp_nvim_ultisnips.treesitter").set_filetype()
     autocmd InsertLeave * lua require("cmp_nvim_ultisnips.treesitter").reset_filetype()
   augroup end
 endfunction
