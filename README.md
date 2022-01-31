@@ -85,11 +85,11 @@ You can compose your own mappings that are comprised of the following actions:
 The recommended mappings use the `compose` function under the hood:
 ```lua
 function M.expand_or_jump_forwards(fallback)
-  M.compose({ "expand", "jump_forwards", "select_next_item" })(fallback)
+  M.compose { "expand", "jump_forwards", "select_next_item" }(fallback)
 end
 
 function M.jump_backwards(fallback)
-  M.compose({ "jump_backwards", "select_prev_item" })(fallback)
+  M.compose { "jump_backwards", "select_prev_item" }(fallback)
 end
 ```
 
@@ -104,7 +104,7 @@ local cmp_ultisnips_mappings = require("cmp_nvim_ultisnips.mappings")
 mapping = {
   ["<Tab>"] = cmp.mapping(
     function(fallback)
-      cmp_ultisnips_mappings.compose({ "expand", "select_next_item" })(fallback)
+      cmp_ultisnips_mappings.compose { "expand", "select_next_item" } (fallback)
     end,
     ...
 ```
