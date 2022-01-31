@@ -43,11 +43,11 @@ function source.complete(self, _, callback)
       end
     end
   end
-  callback({
+  callback {
     items = items,
     -- Cmp will update the items on every keystroke
     isIncomplete = self.expandable_only,
-  })
+  }
 end
 
 function source.resolve(self, completion_item, callback)

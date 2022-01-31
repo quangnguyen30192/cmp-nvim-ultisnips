@@ -10,7 +10,7 @@ M.default_config = {
 
 function M.get_user_config(config)
   local user_config = vim.tbl_deep_extend("force", M.default_config, config)
-  vim.validate({
+  vim.validate {
     show_snippets = {
       user_config.show_snippets,
       function(arg)
@@ -26,7 +26,7 @@ function M.get_user_config(config)
       end,
       "either 'treesitter' or 'ultisnips_default'",
     },
-  })
+  }
   return user_config
 end
 
