@@ -61,13 +61,13 @@ use({
           function(fallback)
             cmp_ultisnips_mappings.expand_or_jump_forwards(fallback)
           end,
-          { "i", "s", [[ "c" (to enable the mapping in command mode) ]] }
+          { "i", "s", --[[ "c" (to enable the mapping in command mode) ]] }
         ),
         ["<S-Tab>"] = cmp.mapping(
           function(fallback)
             cmp_ultisnips_mappings.jump_backwards(fallback)
           end,
-          { "i", "s", [[ "c" (to enable the mapping in command mode) ]] }
+          { "i", "s", --[[ "c" (to enable the mapping in command mode) ]] }
         ),
       },
     })
@@ -104,7 +104,7 @@ local cmp_ultisnips_mappings = require("cmp_nvim_ultisnips.mappings")
 mapping = {
   ["<Tab>"] = cmp.mapping(
     function(fallback)
-      cmp_ultisnips_mappings.compose { "expand", "select_next_item" } (fallback)
+      cmp_ultisnips_mappings.compose { "expand", "select_next_item" }(fallback)
     end,
     ...
 ```
