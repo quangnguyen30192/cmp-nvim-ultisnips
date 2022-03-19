@@ -27,20 +27,17 @@ function source.complete(self, _, callback)
   local snippets = cmpu_snippets.load_snippets(self.expandable_only)
 
   for _, snippet in pairs(snippets) do
-    -- Skip expression snippets for now
-    if not snippet.options:match("e") then
-      local is_regex_snippet = snippet.options:match("r")
-      -- Avoid expanding a regex snippet with an invalid insertText when self.expandable_only == false
-      -- (_cmpu_line_till_cursor is only set when self.expandable_only == true)
-      if not is_regex_snippet or is_regex_snippet and self.expandable_only then
-        local item = {
-          insertText = (is_regex_snippet and snippet.matched) or snippet.trigger,
-          label = snippet.trigger,
-          kind = cmp.lsp.CompletionItemKind.Snippet,
-          snippet = snippet,
-        }
-        table.insert(items, item)
-      end
+    local is_regex_snippet = snippet.options:match("r")
+    -- Avoid expanding a regex snippet with an invalid insertText when self.expandable_only == false
+    -- (_cmpu_line_till_cursor is only set when self.expandable_only == true)
+    if not is_regex_snippet or is_regex_snippet and self.expandable_only then
+      local item = {
+        insertText = (is_regex_snippet and snippet.matched) or snippet.trigger,
+        label = snippet.trigger,
+        kind = cmp.lsp.CompletionItemKind.Snippet,
+        snippet = snippet,
+      }
+      table.insert(items, item)
     end
   end
   callback {

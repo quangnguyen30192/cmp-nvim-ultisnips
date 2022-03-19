@@ -12,20 +12,28 @@ python3 << EOF
 import vim
 from UltiSnips import UltiSnips_Manager, vim_helper
 
-if vim.eval("a:expandable_only") == "True":
-    before = vim_helper.buf.line_till_cursor
+before = vim_helper.buf.line_till_cursor
+expandable_only = vim.eval("a:expandable_only") == "True"
+if expandable_only:
     snippets = UltiSnips_Manager._snips(before, True)
 else:
     snippets = UltiSnips_Manager._snips("", True)
 
 for snippet in snippets:
+    is_context_snippet = snippet._context_code != None
+    # For custom context snippets, we need to check if the snippet can be expanded
+    is_expandable = not expandable_only or not is_context_snippet\
+      or snippet.matches(before, UltiSnips_Manager._visual_content)
+    if not is_expandable:
+      continue
+
     vim.command(
       "call add(g:_cmpu_current_snippets, {"
-      "'trigger': py3eval('str(snippet._trigger)'),"
-      "'description': py3eval('str(snippet._description)'),"
-      "'options': py3eval('str(snippet._opts)'),"
-      "'value': py3eval('str(snippet._value)'),"
-      "'matched': py3eval('str(snippet._matched)'),"
+      "'trigger': py3eval('snippet._trigger'),"
+      "'description': py3eval('snippet._description'),"
+      "'options': py3eval('snippet._opts'),"
+      "'value': py3eval('snippet._value'),"
+      "'matched': py3eval('snippet._matched'),"
       "})"
     )
 EOF
