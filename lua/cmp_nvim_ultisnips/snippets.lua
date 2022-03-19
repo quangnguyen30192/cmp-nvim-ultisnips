@@ -46,8 +46,11 @@ function M.documentation(snippet)
     return formatted_value
   end
   -- Remove surrounding quotes and italicize
-  local description = "*" .. snippet.description:sub(2, -2) .. "*"
-  return string.format("%s\n\n%s", description, formatted_value)
+  local description = snippet.description
+  if description:match('".*"') then
+    description = description:sub(2, -2)
+  end
+  return string.format("*%s*\n\n%s", description, formatted_value)
 end
 
 return M
