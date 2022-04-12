@@ -13,6 +13,7 @@ import vim
 from UltiSnips import UltiSnips_Manager, vim_helper
 
 before = vim_helper.buf.line_till_cursor
+visual_content = UltiSnips_Manager._visual_content
 expandable_only = vim.eval("a:expandable_only") == "True"
 if expandable_only:
     snippets = UltiSnips_Manager._snips(before, True)
@@ -21,9 +22,8 @@ else:
 
 for snippet in snippets:
     is_context_snippet = snippet._context_code != None
-    # For custom context snippets, we need to check if the snippet can be expanded
-    is_expandable = not expandable_only or not is_context_snippet\
-      or snippet.matches(before, UltiSnips_Manager._visual_content)
+    # For custom context snippets, we need to check if the snippet is in the right context to be expanded
+    is_expandable = not expandable_only or not is_context_snippet or snippet._context_match(visual_content, before)
     if not is_expandable:
       continue
 
