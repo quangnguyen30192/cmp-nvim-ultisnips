@@ -28,21 +28,18 @@ function source.complete(self, _, callback)
 
   for _, snippet in pairs(snippets) do
     local is_regex_snippet = snippet.options:match("r")
-    -- Avoid expanding a regex snippet with an invalid insertText when self.expandable_only == false
-    -- (_cmpu_line_till_cursor is only set when self.expandable_only == true)
-    if not is_regex_snippet or is_regex_snippet and self.expandable_only then
-      local item = {
-        insertText = (is_regex_snippet and snippet.matched) or snippet.trigger,
-        label = snippet.trigger,
-        kind = cmp.lsp.CompletionItemKind.Snippet,
-        snippet = snippet,
-      }
-      table.insert(items, item)
-    end
+    local item = {
+      insertText = (is_regex_snippet and snippet.matched) or snippet.trigger,
+      label = snippet.trigger,
+      kind = cmp.lsp.CompletionItemKind.Snippet,
+      snippet = snippet,
+    }
+    table.insert(items, item)
   end
   callback {
     items = items,
-    -- Cmp will update the items on every keystroke
+    -- If true, cmp will update the items on every keystroke.
+    -- When self.expandable_only == false, the snippets are cached so no need to update.
     isIncomplete = self.expandable_only,
   }
 end

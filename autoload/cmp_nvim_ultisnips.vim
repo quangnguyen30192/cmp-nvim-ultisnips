@@ -5,7 +5,7 @@
 " per snippet) with the keys "trigger", "description", "options" and "value".
 "
 " If 'expandable_only' is "True", only expandable snippets are returned, otherwise all
-" snippets for the current filetype are returned.
+" snippets except regex and custom context snippets for the current filetype are returned.
 function! cmp_nvim_ultisnips#get_current_snippets(expandable_only)
 let g:_cmpu_current_snippets = []
 python3 << EOF
@@ -22,10 +22,13 @@ else:
 
 for snippet in snippets:
     is_context_snippet = snippet._context_code != None
-    # For custom context snippets, we need to check if the snippet is in the right context to be expanded
-    is_expandable = not expandable_only or not is_context_snippet or snippet._context_match(visual_content, before)
-    if not is_expandable:
+    is_regex_snippet = "r" in snippet._opts
+    # If show_snippets == "all", the snippets are cached so ignore "dynamic" snippets.
+    if not expandable_only and (is_context_snippet or is_regex_snippet):
       continue
+    # For custom context snippets, always check if the context matches.
+    if is_context_snippet and not snippet._context_match(visual_content, before):
+        continue
 
     vim.command(
       "call add(g:_cmpu_current_snippets, {"
