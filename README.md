@@ -12,7 +12,7 @@
 - **Composable mappings**: get rid of boilerplate code in your config
 - **Treesitter integration**: show snippets based on the filetype at your cursor position
 - **Regular expression snippets**: snippets with the `r` option are supported
-- **Custom context snippets**: snippets with custom context code are handled correctly
+- **Custom context snippets**: snippets are only shown in the correct context
 - **Customization**: change which and how snippets are displayed by cmp
 
 ## Dependencies
@@ -135,11 +135,9 @@ are handled entirely by UltiSnips.
 If set to `"expandable"`, only those snippets currently expandable by UltiSnips will be
 shown. The snippets will always be in sync with the currently available UltiSnips snippets.
 
-`"all"` will show all snippets for the current filetype (including custom context snippets
-that are not currently expandable). If using this option, be aware
-that all snippets for the current buffer will be cached (even if the snippet definitions
-changed). You can then manually reload the snippets with the command `:CmpUltisnipsReloadSnippets`
-or by using an autocommand:
+`"all"` will show all snippets for the current filetype except regex and custom context snippets.
+This is due to caching of all snippets for the current buffer. They will not update even if the snippet definitions changed
+- you can then manually reload the snippets with the command `:CmpUltisnipsReloadSnippets` or by using an autocommand:
 
 ```vim
 autocmd BufWritePost *.snippets :CmpUltisnipsReloadSnippets
