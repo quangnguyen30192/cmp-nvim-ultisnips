@@ -5,27 +5,38 @@
 " per snippet) with the keys "trigger", "description", "options" and "value".
 "
 " If 'expandable_only' is "True", only expandable snippets are returned, otherwise all
-" snippets for the current filetype are returned.
+" snippets except regex and custom context snippets for the current filetype are returned.
 function! cmp_nvim_ultisnips#get_current_snippets(expandable_only)
 let g:_cmpu_current_snippets = []
 python3 << EOF
 import vim
 from UltiSnips import UltiSnips_Manager, vim_helper
 
-if vim.eval("a:expandable_only") == "True":
-    before = vim_helper.buf.line_till_cursor
+before = vim_helper.buf.line_till_cursor
+visual_content = UltiSnips_Manager._visual_content
+expandable_only = vim.eval("a:expandable_only") == "True"
+if expandable_only:
     snippets = UltiSnips_Manager._snips(before, True)
 else:
     snippets = UltiSnips_Manager._snips("", True)
 
 for snippet in snippets:
+    is_context_snippet = snippet._context_code != None
+    is_regex_snippet = "r" in snippet._opts
+    # If show_snippets == "all", the snippets are cached so ignore "dynamic" snippets.
+    if not expandable_only and (is_context_snippet or is_regex_snippet):
+      continue
+    # For custom context snippets, always check if the context matches.
+    if is_context_snippet and not snippet._context_match(visual_content, before):
+        continue
+
     vim.command(
       "call add(g:_cmpu_current_snippets, {"
-      "'trigger': py3eval('str(snippet._trigger)'),"
-      "'description': py3eval('str(snippet._description)'),"
-      "'options': py3eval('str(snippet._opts)'),"
-      "'value': py3eval('str(snippet._value)'),"
-      "'matched': py3eval('str(snippet._matched)'),"
+      "'trigger': py3eval('snippet._trigger'),"
+      "'description': py3eval('snippet._description'),"
+      "'options': py3eval('snippet._opts'),"
+      "'value': py3eval('snippet._value'),"
+      "'matched': py3eval('snippet._matched'),"
       "})"
     )
 EOF
