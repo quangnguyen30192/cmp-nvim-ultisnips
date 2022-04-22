@@ -5,7 +5,7 @@ local function t(keys)
 end
 
 local function can_execute(arg)
-  return cmp.get_selected_entry() == nil and vim.fn[arg]() == 1
+  return vim.fn[arg]() == 1
 end
 
 -- The <Plug> mappings are defined in autoload/cmp_nvim_ultisnips.vim.
