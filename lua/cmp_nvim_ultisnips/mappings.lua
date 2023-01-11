@@ -62,6 +62,10 @@ function M.expand_or_jump_forwards(fallback)
   M.compose { "expand", "jump_forwards", "select_next_item" }(fallback)
 end
 
+function M.jump_forwards(fallback)
+  M.compose { "jump_forwards", "select_next_item" }(fallback)
+end
+
 function M.jump_backwards(fallback)
   M.compose { "jump_backwards", "select_prev_item" }(fallback)
 end
