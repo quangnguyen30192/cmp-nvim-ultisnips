@@ -12,6 +12,7 @@ local source
 function M.create_source()
   -- Source UltiSnips file in case it is not loaded yet (GH issue #49)
   vim.cmd("runtime! plugin/UltiSnips.vim")
+  vim.cmd("py3 import ultisnips_utils")
   -- This is necessary because we want to be able to define our own
   -- select mode mappings used to jump between snippet tabstops (GH issue #5)
   vim.g.UltiSnipsRemoveSelectModeMappings = 0
