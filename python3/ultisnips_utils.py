@@ -10,18 +10,30 @@ from UltiSnips import UltiSnips_Manager, vim_helper
 
 
 def fetch_current_snippets(expandable_only):
+    line_until_cursor = vim_helper.buf.line_till_cursor
+    visual_content = UltiSnips_Manager._visual_content
     if expandable_only:
-        snippets = UltiSnips_Manager._snips(before_line, True)
+        snippets = UltiSnips_Manager._snips(line_until_cursor, True)
     else:
         snippets = UltiSnips_Manager._snips("", True)
 
     current_snippet_infos = []
     for snippet in snippets:
+        is_context_snippet = snippet._context_code is not None
+        is_regex_snippet = "r" in snippet._opts
+        # If show_snippets == "all", the snippets are cached so ignore "dynamic" snippets.
+        if not expandable_only and (is_context_snippet or is_regex_snippet):
+            continue
+        # For custom context snippets, always check if the context matches.
+        if is_context_snippet and not snippet._context_match(visual_content, line_until_cursor):
+            continue
+
         snippet_info = {
             "trigger": snippet._trigger,
             "description": snippet._description,
             "options": snippet._opts,
             "value": snippet._value,
+            "matched": snippet._matched,
         }
         current_snippet_infos.append(snippet_info)
     return current_snippet_infos
