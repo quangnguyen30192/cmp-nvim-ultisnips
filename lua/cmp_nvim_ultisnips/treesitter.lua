@@ -34,7 +34,7 @@ local cur_ft_at_cursor
 function M.set_filetype()
   local new_ft = get_ft_at_cursor()
   if new_ft ~= nil and new_ft ~= cur_ft_at_cursor and new_ft ~= vim.bo.filetype then
-    vim.fn.pyeval(("ultisnips_utils.set_filetype(%s)"):format(new_ft))
+    vim.fn.pyeval(('ultisnips_utils.set_filetype("%s")'):format(new_ft))
     cur_ft_at_cursor = new_ft
   end
 end
