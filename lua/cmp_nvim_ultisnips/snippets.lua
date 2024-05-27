@@ -9,13 +9,12 @@ function M.load_snippets(expandable_only)
   if expandable_only then
     -- Do not cache snippets since the set of expandable
     -- snippets can change on every keystroke.
-    return vim.fn["cmp_nvim_ultisnips#get_current_snippets"](true)
+    return vim.fn.pyeval("ultisnips_utils.fetch_current_snippets(True)")
   end
   local ft = vim.bo.filetype
   local snippets = snippets_for_ft[ft]
   if not snippets then
-    snippets = vim.fn["cmp_nvim_ultisnips#get_current_snippets"](false)
-    snippets_for_ft[ft] = snippets
+    snippets_for_ft[ft] = vim.fn.pyeval("ultisnips_utils.fetch_current_snippets(False)")
   end
   return snippets
 end
