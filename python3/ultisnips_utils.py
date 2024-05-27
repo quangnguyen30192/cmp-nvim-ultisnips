@@ -1,5 +1,3 @@
-from UltiSnips import UltiSnips_Manager, vim_helper
-
 # Retrieves additional snippet information that is not directly accessible
 # using the UltiSnips API functions. Stores a list of dictionaries (one per
 # snippet) with the keys "trigger", "description", "options" and "value"
@@ -10,6 +8,8 @@ from UltiSnips import UltiSnips_Manager, vim_helper
 
 
 def fetch_current_snippets(expandable_only):
+    from UltiSnips import UltiSnips_Manager, vim_helper
+
     line_until_cursor = vim_helper.buf.line_till_cursor
     visual_content = UltiSnips_Manager._visual_content
     if expandable_only:
@@ -25,7 +25,9 @@ def fetch_current_snippets(expandable_only):
         if not expandable_only and (is_context_snippet or is_regex_snippet):
             continue
         # For custom context snippets, always check if the context matches.
-        if is_context_snippet and not snippet._context_match(visual_content, line_until_cursor):
+        if is_context_snippet and not snippet._context_match(
+            visual_content, line_until_cursor
+        ):
             continue
 
         snippet_info = {
@@ -40,6 +42,8 @@ def fetch_current_snippets(expandable_only):
 
 
 def set_filetype(ft):
+    from UltiSnips import vim_helper
+
     class CustomVimBuffer(vim_helper.VimBuffer):
         @property
         def filetypes(self):
@@ -50,4 +54,6 @@ def set_filetype(ft):
 
 
 def reset_filetype():
+    from UltiSnips import vim_helper
+
     vim_helper.buf = vim_helper._orig_buf
