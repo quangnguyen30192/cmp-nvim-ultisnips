@@ -14,7 +14,8 @@ function M.load_snippets(expandable_only)
   local ft = vim.bo.filetype
   local snippets = snippets_for_ft[ft]
   if not snippets then
-    snippets_for_ft[ft] = vim.fn.pyeval("ultisnips_utils.fetch_current_snippets(False)")
+    snippets = vim.fn.pyeval("ultisnips_utils.fetch_current_snippets(False)")
+    snippets_for_ft[ft] = snippets
   end
   return snippets
 end
