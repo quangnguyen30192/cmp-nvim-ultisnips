@@ -11,6 +11,8 @@ function source.new(config)
       vim.fn["cmp_nvim_ultisnips#setup_treesitter_autocmds"]()
     end
   end
+
+  vim.fn["cmp_nvim_ultisnips#initCustomUltiSnipMappings"]()
   return self
 end
 
