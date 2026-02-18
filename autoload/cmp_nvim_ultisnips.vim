@@ -29,3 +29,23 @@ function! cmp_nvim_ultisnips#initCustomUltiSnipMappings()
   smap <silent> <Plug>(cmpu-jump-backwards)
         \ <Esc>:call UltiSnips#JumpBackwards()<cr>
 endfunction
+
+" ------------------------------------------------------------------------
+" Wrappers for ultisnips_utils.py that defer the import to first use.
+" Saves 100+ ms of nvim startup time.
+" ------------------------------------------------------------------------
+
+function! cmp_nvim_ultisnips#fetch_current_snippets(expandable_only)
+  py3 import ultisnips_utils
+  return py3eval('ultisnips_utils.fetch_current_snippets(vim.eval("a:expandable_only"))')
+endfunction
+
+function! cmp_nvim_ultisnips#set_filetype(ft)
+  py3 import ultisnips_utils
+  py3 ultisnips_utils.set_filetype(vim.eval("a:ft"))
+endfunction
+
+function! cmp_nvim_ultisnips#reset_filetype()
+  py3 import ultisnips_utils
+  py3 ultisnips_utils.reset_filetype()
+endfunction
